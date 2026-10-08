@@ -14,6 +14,7 @@ export function Onboarding() {
   const createWallet = useWallet((s) => s.createWallet);
   const restoreWallet = useWallet((s) => s.restoreWallet);
   const setPin = useWallet((s) => s.setPin);
+  const completeSetup = useWallet((s) => s.completeSetup);
   const wallet = useWallet((s) => s.wallet);
 
   const [step, setStep] = useState<Step>("welcome");
@@ -54,8 +55,14 @@ export function Onboarding() {
         toast("PINs must match and be 6 digits.");
         return;
       }
+
       await setPin(pin);
+      toast("PIN set");
     }
+
+    // Both choices finish onboarding. The app gate watches setupComplete
+    // and will immediately switch from the PIN screen to the wallet shell.
+    completeSetup();
   }
 
   return (
