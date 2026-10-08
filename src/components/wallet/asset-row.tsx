@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { ChevronRight } from "lucide-react";
 import { TokenIcon } from "@/components/wallet/token-icon";
 import { Sparkline } from "@/components/wallet/sparkline";
 import { ASSETS } from "@/lib/wallet/assets";
@@ -15,41 +16,45 @@ export function AssetRow({
 }) {
   const asset = ASSETS[row.id];
   const up = row.change >= 0;
+
   return (
     <Link
       to="/asset/$id"
       params={{ id: row.id }}
-      className="flex items-center gap-3 rounded-lg px-2 py-3 transition-colors duration-150 hover:bg-accent"
+      className="group flex min-h-[92px] items-center gap-3 border-b border-border/70 py-3 transition-colors duration-150 hover:bg-white/[0.025]"
     >
-      <TokenIcon id={row.id} />
+      <TokenIcon id={row.id} className="size-12 shrink-0 bg-secondary/80" />
+
       <div className="min-w-0 flex-1">
-        <div className="flex items-baseline justify-between gap-3">
-          <p className="truncate text-sm font-medium">{asset.name}</p>
-          <p className="tabular text-sm font-medium">
-            {hidden ? "••••" : formatUsd(row.value)}
-          </p>
-        </div>
-        <div className="mt-0.5 flex items-center justify-between gap-3">
-          <p className="text-xs text-muted-foreground">
-            {hidden ? "••••" : formatTokenAmount(row.amount)} {asset.symbol}
-          </p>
-          <p
-            className={cn(
-              "tabular text-xs",
-              up ? "text-gain" : "text-loss",
-            )}
-          >
-            {up ? "+" : ""}
-            {row.change.toFixed(2)}%
-          </p>
-        </div>
+        <p className="truncate text-[15px] font-medium">{asset.name}</p>
+        <p className="mt-1 text-[13px] text-muted-foreground">
+          {hidden ? "••••" : formatTokenAmount(row.amount)} {asset.symbol}
+        </p>
       </div>
+
+      <div className="flex min-w-[108px] flex-col items-end">
+        <p className="tabular text-[15px] font-medium">
+          {hidden ? "••••" : formatUsd(row.value)}
+        </p>
+        <p
+          className={cn(
+            "mt-1 tabular text-[13px]",
+            up ? "text-gain" : "text-loss",
+          )}
+        >
+          {up ? "+" : ""}
+          {row.change.toFixed(2)}%
+        </p>
+      </div>
+
       <Sparkline
         seed={row.id}
         end={row.price}
         changePct={row.change}
-        className="hidden h-8 w-16 sm:block"
+        className="h-8 w-[62px] shrink-0 text-loss"
       />
+
+      <ChevronRight className="size-4 shrink-0 text-muted-foreground" />
     </Link>
   );
 }
