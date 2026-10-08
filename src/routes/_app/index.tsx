@@ -1,8 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowDownLeft, ArrowLeftRight, ArrowUpRight, Bell, ChevronDown, ChevronRight } from "lucide-react";
+import { CollectibleArt } from "@/components/wallet/collectible-art";
 import { AssetRow } from "@/components/wallet/asset-row";
 import { Sparkline } from "@/components/wallet/sparkline";
+import { COLLECTIBLES } from "@/lib/wallet/assets";
 import { usePrices } from "@/lib/wallet/prices";
 import { holdingRows, portfolioTotals } from "@/lib/wallet/select";
 import { useWallet } from "@/lib/wallet/store";
@@ -21,10 +23,10 @@ function HomePage() {
 
   return (
     <div className="stagger-enter">
-      <header className="relative min-h-10">
+      <header className="flex justify-center">
         <button
           type="button"
-          className="wallet-floating-selector hidden lg:inline-flex"
+          className="wallet-selector"
           aria-label="Select wallet"
         >
           <span>Wallet 1</span>
@@ -34,24 +36,15 @@ function HomePage() {
 
       <button
         type="button"
-        className="wallet-floating-selector lg:hidden"
-        aria-label="Select wallet"
-      >
-        <span>Wallet 1</span>
-        <ChevronDown className="size-3 text-muted-foreground" />
-      </button>
-
-      <button
-        type="button"
-        className="notification-floating-button lg:hidden"
+        className="notification-button"
         aria-label="Notifications"
         title="Notifications"
       >
         <Bell className="size-5 stroke-[1.7]" />
       </button>
 
-      <section className="portfolio-summary relative mt-1 min-h-[88px]">
-        <div className="portfolio-balance-copy">
+      <section className="relative mt-2 min-h-[88px]">
+        <div className="pr-[39%]">
           <p className="text-[8px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
             Total balance
           </p>
@@ -106,6 +99,7 @@ function HomePage() {
           )}
         </div>
       </section>
+>
     </div>
   );
 }
@@ -116,7 +110,7 @@ function ActionLink({
   label,
 }: {
   to: "/send" | "/receive" | "/swap";
-  icon: typeof ArrowLeftRight;
+  icon: typeof ArrowUpRight;
   label: string;
 }) {
   return (
