@@ -5,8 +5,6 @@ import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import { Toaster } from "@/components/ui/sonner";
 import appCss from "../styles.css?url";
 
-const APP_NAME = "Sable";
-
 export const Route = createRootRoute({
   ssr: false,
   shellComponent: RootShell,
@@ -18,8 +16,12 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en" className="dark antialiased" suppressHydrationWarning>
       <head>
         <HeadContent />
+        <link rel="stylesheet" href={appCss} />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Scripts />
+      </body>
     </html>
   );
 }
@@ -32,7 +34,6 @@ function RootApp() {
         <Outlet />
       </AuthProvider>
       <Toaster />
-      <Scripts />
     </>
   );
 }
