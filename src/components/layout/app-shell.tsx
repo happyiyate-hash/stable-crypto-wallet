@@ -82,7 +82,7 @@ export function AppShell() {
           </main>
         </div>
 
-        <nav className="pointer-events-none fixed inset-x-0 bottom-0 z-40 pb-[calc(env(safe-area-inset-bottom)+8px)] lg:hidden">
+        <nav aria-label="Mobile navigation" className="pointer-events-none fixed inset-x-0 bottom-0 z-40 pb-[calc(env(safe-area-inset-bottom)+8px)] lg:hidden">
           <div className="flex w-full items-end gap-2 px-2">
             <div className="pointer-events-auto grid h-14 flex-1 grid-cols-3 items-center rounded-[28px] border border-white/[0.09] bg-[#18191b] px-1 shadow-[0_6px_20px_rgba(0,0,0,0.28)]">
               {NAV.map((item) => {
