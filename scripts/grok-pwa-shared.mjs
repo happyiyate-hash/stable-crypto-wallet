@@ -171,9 +171,22 @@ export function renderWebManifest(hostHeader) {
       theme_color: "#000000",
       icons: [
         {
+          src: "/icons/sable-192.png",
+          sizes: "192x192",
+          type: "image/png",
+          purpose: "any",
+        },
+        {
+          src: "/icons/sable-512.png",
+          sizes: "512x512",
+          type: "image/png",
+          purpose: "any maskable",
+        },
+        {
           src: "/sable-mark.svg",
           sizes: "32x32",
           type: "image/svg+xml",
+          purpose: "any",
         },
       ],
     },
