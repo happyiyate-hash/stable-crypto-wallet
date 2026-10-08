@@ -1,10 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowDownLeft, ArrowLeftRight, ArrowUpRight, ChevronDown, ChevronRight } from "lucide-react";
-import { CollectibleArt } from "@/components/wallet/collectible-art";
+import { ArrowDownLeft, ArrowLeftRight, ArrowUpRight, Bell, ChevronDown, ChevronRight } from "lucide-react";
 import { AssetRow } from "@/components/wallet/asset-row";
 import { Sparkline } from "@/components/wallet/sparkline";
-import { COLLECTIBLES } from "@/lib/wallet/assets";
 import { usePrices } from "@/lib/wallet/prices";
 import { holdingRows, portfolioTotals } from "@/lib/wallet/select";
 import { useWallet } from "@/lib/wallet/store";
@@ -23,10 +21,10 @@ function HomePage() {
 
   return (
     <div className="stagger-enter">
-      <header className="flex justify-center">
+      <header className="relative min-h-10">
         <button
           type="button"
-          className="inline-flex h-8 items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.025] px-3 text-[13px] font-medium"
+          className="wallet-floating-selector hidden lg:inline-flex"
           aria-label="Select wallet"
         >
           <span>Wallet 1</span>
@@ -34,8 +32,26 @@ function HomePage() {
         </button>
       </header>
 
-      <section className="relative mt-2 min-h-[88px]">
-        <div className="pr-[39%]">
+      <button
+        type="button"
+        className="wallet-floating-selector lg:hidden"
+        aria-label="Select wallet"
+      >
+        <span>Wallet 1</span>
+        <ChevronDown className="size-3 text-muted-foreground" />
+      </button>
+
+      <button
+        type="button"
+        className="notification-floating-button lg:hidden"
+        aria-label="Notifications"
+        title="Notifications"
+      >
+        <Bell className="size-5 stroke-[1.7]" />
+      </button>
+
+      <section className="portfolio-summary relative mt-1 min-h-[88px]">
+        <div className="portfolio-balance-copy">
           <p className="text-[8px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
             Total balance
           </p>
@@ -59,7 +75,7 @@ function HomePage() {
           seed="portfolio"
           end={total || 1}
           changePct={pct}
-          className="absolute right-0 top-[43px] h-8 w-[42%] text-loss"
+          className="portfolio-sparkline text-loss"
         />
       </section>
 
@@ -90,33 +106,6 @@ function HomePage() {
           )}
         </div>
       </section>
-
-      <section className="mt-3">
-        <div className="mb-1 flex items-center justify-between">
-          <h2 className="text-[17px] font-medium tracking-tight">Collectibles</h2>
-          <button
-            type="button"
-            className="inline-flex items-center text-[11px] text-muted-foreground"
-          >
-            View all <ChevronRight className="size-3" />
-          </button>
-        </div>
-
-        <div className="grid grid-cols-4 gap-1.5">
-          {COLLECTIBLES.map((c) => (
-            <article
-              key={c.id}
-              className="overflow-hidden rounded-[8px] border border-white/[0.07] bg-white/[0.025]"
-            >
-              <CollectibleArt seed={c.seed} className="aspect-[1.35] w-full" />
-              <div className="px-1.5 py-1">
-                <p className="truncate text-[8px] font-medium">{c.name}</p>
-                <p className="truncate text-[7px] text-muted-foreground">{c.collection}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
     </div>
   );
 }
@@ -127,7 +116,7 @@ function ActionLink({
   label,
 }: {
   to: "/send" | "/receive" | "/swap";
-  icon: typeof ArrowUpRight;
+  icon: typeof ArrowLeftRight;
   label: string;
 }) {
   return (
