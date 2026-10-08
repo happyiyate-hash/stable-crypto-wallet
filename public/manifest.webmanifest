@@ -1,0 +1,27 @@
+{
+  "name": "Sable Wallet",
+  "short_name": "Sable",
+  "description": "A private, self-custodial wallet for digital assets.",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/sable-mark.svg",
+      "sizes": "32x32",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/sable-mark.svg",
+      "sizes": "32x32",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
