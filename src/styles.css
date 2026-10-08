@@ -80,6 +80,133 @@
   }
 }
 
+.wallet-floating-selector {
+  position: fixed;
+  top: calc(env(safe-area-inset-top) + 14px);
+  right: 16px;
+  z-index: 50;
+  height: 42px;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgb(245 245 244 / 0.1);
+  border-radius: 999px;
+  background: var(--color-card);
+  padding: 0 14px;
+  color: var(--color-foreground);
+  box-shadow: 0 12px 30px rgb(0 0 0 / 0.34);
+  font-size: 13px;
+  font-weight: 600;
+  transition:
+    border-color 180ms var(--ease-out-soft),
+    transform 180ms var(--ease-out-soft);
+}
+
+.wallet-floating-selector:hover {
+  border-color: rgb(245 245 244 / 0.16);
+}
+
+.wallet-floating-selector:active {
+  transform: scale(0.98);
+}
+
+.notification-floating-button {
+  position: fixed;
+  top: calc(env(safe-area-inset-top) + 14px);
+  left: 16px;
+  z-index: 50;
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border: 1px solid rgb(245 245 244 / 0.1);
+  border-radius: 999px;
+  background: var(--color-card);
+  color: var(--color-foreground);
+  box-shadow: 0 12px 30px rgb(0 0 0 / 0.34);
+  transition:
+    border-color 180ms var(--ease-out-soft),
+    transform 180ms var(--ease-out-soft);
+}
+
+.notification-floating-button:hover {
+  border-color: rgb(245 245 244 / 0.16);
+}
+
+.notification-floating-button:active {
+  transform: scale(0.96);
+}
+
+.portfolio-balance-copy {
+  padding-right: 40%;
+}
+
+.portfolio-sparkline {
+  position: absolute;
+  top: 36px;
+  right: 2px;
+  width: 38%;
+  height: 36px;
+}
+
+.mobile-bottom-nav-shell {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 10px;
+}
+
+.mobile-bottom-nav-main {
+  display: grid;
+  width: calc(100% - 70px);
+  height: 60px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: center;
+  border: 1px solid rgb(245 245 244 / 0.1);
+  border-radius: 999px;
+  background: var(--color-secondary);
+  padding: 4px;
+  box-shadow:
+    0 16px 34px rgb(0 0 0 / 0.42),
+    0 4px 12px rgb(0 0 0 / 0.24);
+}
+
+.mobile-nav-indicator {
+  position: absolute;
+  bottom: 5px;
+  height: 3px;
+  width: 18px;
+  border-radius: 999px;
+  background: var(--color-foreground);
+}
+
+.mobile-swap-button {
+  display: grid;
+  width: 60px;
+  height: 60px;
+  flex: 0 0 60px;
+  place-items: center;
+  border: 1px solid rgb(245 245 244 / 0.13);
+  border-radius: 20px;
+  background: var(--color-secondary);
+  color: var(--color-foreground);
+  box-shadow:
+    0 16px 34px rgb(0 0 0 / 0.42),
+    0 4px 12px rgb(0 0 0 / 0.24);
+  transition:
+    border-color 180ms var(--ease-out-soft),
+    transform 120ms var(--ease-out-soft);
+}
+
+.mobile-swap-button:hover {
+  border-color: rgb(245 245 244 / 0.2);
+}
+
+.mobile-swap-button:active {
+  transform: scale(0.96);
+}
+
 @keyframes sable-enter {
   from {
     opacity: 0;
@@ -132,9 +259,41 @@
   animation-delay: 390ms;
 }
 
+@media (max-width: 1023px) {
+  .portfolio-summary {
+    padding-inline: 2px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .wallet-floating-selector {
+    position: static;
+    height: 32px;
+    padding: 0 12px;
+    box-shadow: none;
+  }
+
+  .portfolio-balance-copy {
+    padding-right: 39%;
+  }
+
+  .portfolio-sparkline {
+    top: 43px;
+    right: 0;
+    width: 42%;
+    height: 32px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .stagger-enter > * {
     animation: none;
+  }
+
+  .wallet-floating-selector,
+  .notification-floating-button,
+  .mobile-swap-button {
+    transition: none;
   }
 }
 
