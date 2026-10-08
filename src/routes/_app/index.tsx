@@ -22,10 +22,11 @@ export const Route = createFileRoute("/_app/")({
 
 function HomePage() {
   const holdings = useWallet((s) => s.holdings);
+  const network = useWallet((s) => s.network);
   const hide = useWallet((s) => s.hideBalances);
   const prices = usePrices((s) => s.prices);
 
-  const rows = holdingRows(holdings, prices, "all");
+  const rows = holdingRows(holdings, prices, network);
   const { total, delta, pct } = portfolioTotals(rows);
   const up = delta >= 0;
 
