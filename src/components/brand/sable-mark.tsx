@@ -2,14 +2,12 @@ import { cn } from "@/lib/utils";
 
 export function SableMark({ className }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 32 32"
-      className={cn("text-foreground", className)}
-      aria-hidden
-    >
-      <circle cx="16" cy="16" r="14" fill="currentColor" />
-      <circle cx="21" cy="16" r="11" fill="var(--color-background)" />
-    </svg>
+    <img
+      src="/sable-mark.svg"
+      className={cn("block", className)}
+      alt=""
+      aria-hidden="true"
+    />
   );
 }
 
