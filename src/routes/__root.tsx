@@ -23,7 +23,7 @@ function RootShell({ children }: { children: ReactNode }) {
         />
         <link rel="manifest" href="/manifest.webmanifest" />
         <link rel="icon" href="/sable-mark.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/sable-mark.svg" />
+        <link rel="apple-touch-icon" href="/icons/sable-192.png" />
         <meta name="theme-color" content="#09090b" />
         <link rel="stylesheet" href={appCss} />
       </head>
