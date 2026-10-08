@@ -1,18 +1,16 @@
 import { Link } from "@tanstack/react-router";
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowDownLeft, ArrowUpRight, ArrowLeftRight, Eye, EyeOff } from "lucide-react";
+import {
+  ArrowDownLeft,
+  ArrowLeftRight,
+  ArrowUpRight,
+  ChevronDown,
+  ChevronRight,
+} from "lucide-react";
 import { CollectibleArt } from "@/components/wallet/collectible-art";
 import { AssetRow } from "@/components/wallet/asset-row";
 import { Sparkline } from "@/components/wallet/sparkline";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { COLLECTIBLES, NETWORKS } from "@/lib/wallet/assets";
+import { COLLECTIBLES } from "@/lib/wallet/assets";
 import { usePrices } from "@/lib/wallet/prices";
 import { holdingRows, portfolioTotals } from "@/lib/wallet/select";
 import { useWallet } from "@/lib/wallet/store";
@@ -24,126 +22,77 @@ export const Route = createFileRoute("/_app/")({
 
 function HomePage() {
   const holdings = useWallet((s) => s.holdings);
-  const network = useWallet((s) => s.network);
-  const setNetwork = useWallet((s) => s.setNetwork);
   const hide = useWallet((s) => s.hideBalances);
-  const toggleHide = useWallet((s) => s.toggleHideBalances);
-  const name = useWallet((s) => s.wallet?.name ?? "Wallet");
   const prices = usePrices((s) => s.prices);
 
-  const rows = holdingRows(holdings, prices, network);
+  const rows = holdingRows(holdings, prices, "all");
   const { total, delta, pct } = portfolioTotals(rows);
   const up = delta >= 0;
-  const networkLabel =
-    NETWORKS.find((n) => n.id === network)?.label ?? "All networks";
 
   return (
-    <div className="stagger-enter space-y-8">
-      <header className="flex items-start justify-between gap-3">
-        <div>
-          <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
-            {name}
-          </p>
-          <h1 className="mt-1 text-xl font-medium tracking-tight">Portfolio</h1>
-        </div>
-        <div className="flex items-center gap-1">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="sm">
-                {networkLabel}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {NETWORKS.map((n) => (
-                <DropdownMenuItem key={n.id} onClick={() => setNetwork(n.id)}>
-                  {n.label}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            aria-label={hide ? "Show balances" : "Hide balances"}
-            onClick={toggleHide}
-          >
-            {hide ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-          </Button>
-        </div>
+    <div className="stagger-enter pb-2">
+      <header className="flex justify-center pt-1">
+        <button
+          type="button"
+          className="inline-flex h-11 items-center gap-3 rounded-full border border-border bg-card/60 px-6 text-[15px] font-medium shadow-[var(--shadow-border)] transition-colors hover:bg-accent"
+          aria-label="Select wallet"
+        >
+          <span>Wallet 1</span>
+          <ChevronDown className="size-4 text-muted-foreground" />
+        </button>
       </header>
 
-      <section className="rounded-xl bg-card px-5 py-6 shadow-[var(--shadow-border)]">
-        <p className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
-          Total balance
-        </p>
-        <p className="mt-3 text-4xl font-medium tracking-tight tabular sm:text-5xl">
-          {hide ? "••••••" : formatUsd(total)}
-        </p>
-        <div className="mt-3 flex items-center justify-between gap-4">
+      <section className="relative mt-8 min-h-[190px]">
+        <div className="pr-0 sm:pr-44">
+          <p className="text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground">
+            Total balance
+          </p>
+          <p className="mt-2 text-[48px] font-medium leading-none tracking-[-0.04em] tabular sm:text-6xl">
+            {hide ? "••••••" : formatUsd(total)}
+          </p>
           <p
             className={cn(
-              "tabular text-sm",
+              "mt-5 text-[15px] tabular",
               up ? "text-gain" : "text-loss",
             )}
           >
             {hide
               ? "••••"
               : `${up ? "+" : ""}${formatUsd(delta)} (${up ? "+" : ""}${pct.toFixed(2)}%)`}
-            <span className="ml-1 text-muted-foreground">24h</span>
+            <span className="ml-2 text-muted-foreground">24h</span>
           </p>
-          <Sparkline
-            seed="portfolio"
-            end={total || 1}
-            changePct={pct}
-            className="h-10 w-28"
-          />
         </div>
-        {rows.length > 0 && (
-          <div className="mt-6 flex h-1.5 overflow-hidden rounded-full bg-secondary">
-            {rows.map((row) => (
-              <span
-                key={row.id}
-                className="h-full bg-foreground"
-                style={{
-                  width: `${(row.value / total) * 100}%`,
-                  opacity: 0.25 + (row.value / total) * 0.75,
-                }}
-              />
-            ))}
-          </div>
-        )}
+
+        <Sparkline
+          seed="portfolio"
+          end={total || 1}
+          changePct={pct}
+          className="absolute right-0 top-24 h-14 w-[43%] min-w-40 text-loss sm:top-20 sm:w-64"
+        />
       </section>
 
-      <div className="grid grid-cols-3 gap-2">
-        <Button variant="secondary" className="h-14 flex-col gap-1 rounded-lg" asChild>
-          <Link to="/send">
-            <ArrowUpRight className="size-4" />
-            Send
-          </Link>
-        </Button>
-        <Button variant="secondary" className="h-14 flex-col gap-1 rounded-lg" asChild>
-          <Link to="/receive">
-            <ArrowDownLeft className="size-4" />
-            Receive
-          </Link>
-        </Button>
-        <Button variant="secondary" className="h-14 flex-col gap-1 rounded-lg" asChild>
-          <Link to="/swap">
-            <ArrowLeftRight className="size-4" />
-            Swap
-          </Link>
-        </Button>
+      <div className="mt-3 grid grid-cols-3 gap-2">
+        <ActionLink to="/send" icon={ArrowUpRight} label="Send" />
+        <ActionLink to="/receive" icon={ArrowDownLeft} label="Receive" />
+        <ActionLink to="/swap" icon={ArrowLeftRight} label="Swap" />
       </div>
 
-      <section>
-        <div className="mb-2 flex items-center justify-between px-1">
-          <h2 className="text-sm font-medium">Assets</h2>
-          <Badge>Preview</Badge>
+      <section className="mt-10">
+        <div className="mb-1 flex items-center justify-between">
+          <h2 className="text-[22px] font-medium tracking-tight">Assets</h2>
+          <button
+            type="button"
+            className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Manage
+            <ChevronRight className="size-4" />
+          </button>
         </div>
-        <div className="divide-y divide-border rounded-xl bg-card px-2 py-1 shadow-[var(--shadow-border)]">
+
+        <div className="border-t border-border/80">
           {rows.length === 0 ? (
-            <p className="px-3 py-8 text-center text-sm text-muted-foreground">
-              No assets on this network.
+            <p className="py-10 text-center text-sm text-muted-foreground">
+              No assets on this wallet.
             </p>
           ) : (
             rows.map((row) => (
@@ -153,26 +102,57 @@ function HomePage() {
         </div>
       </section>
 
-      <section>
-        <div className="mb-3 flex items-center justify-between px-1">
-          <h2 className="text-sm font-medium">Collectibles</h2>
-          <span className="text-xs text-muted-foreground">Monolith</span>
+      <section className="mt-7">
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="text-[22px] font-medium tracking-tight">Collectibles</h2>
+          <button
+            type="button"
+            className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            View all
+            <ChevronRight className="size-4" />
+          </button>
         </div>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+
+        <div className="grid grid-cols-4 gap-2.5">
           {COLLECTIBLES.map((c) => (
             <article
               key={c.id}
-              className="overflow-hidden rounded-lg bg-card shadow-[var(--shadow-border)]"
+              className="overflow-hidden rounded-[16px] border border-border bg-card/55 shadow-[var(--shadow-border)]"
             >
               <CollectibleArt seed={c.seed} className="aspect-square w-full" />
-              <div className="px-3 py-2.5">
-                <p className="text-sm font-medium">{c.name}</p>
-                <p className="text-xs text-muted-foreground">{c.collection}</p>
+              <div className="px-2.5 py-2">
+                <p className="truncate text-[12px] font-medium">{c.name}</p>
+                <p className="truncate text-[11px] text-muted-foreground">
+                  {c.collection}
+                </p>
               </div>
             </article>
           ))}
         </div>
       </section>
     </div>
+  );
+}
+
+function ActionLink({
+  to,
+  icon: Icon,
+  label,
+}: {
+  to: "/send" | "/receive" | "/swap";
+  icon: typeof ArrowUpRight;
+  label: string;
+}) {
+  return (
+    <Link
+      to={to}
+      className="flex flex-col items-center gap-2 text-[15px] font-medium text-foreground"
+    >
+      <span className="grid size-[58px] place-items-center rounded-full border border-border bg-card shadow-[var(--shadow-border)]">
+        <Icon className="size-6 stroke-[1.7]" />
+      </span>
+      <span>{label}</span>
+    </Link>
   );
 }
