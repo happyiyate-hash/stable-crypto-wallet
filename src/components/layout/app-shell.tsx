@@ -77,14 +77,14 @@ export function AppShell() {
         </aside>
 
         <div className="lg:pl-56">
-          <main className="mx-auto min-h-dvh w-full max-w-xl px-4 pb-24 pt-16 lg:max-w-2xl lg:px-6 lg:pb-12 lg:pt-8">
+          <main className="mx-auto min-h-dvh w-full max-w-xl px-0 pb-16 pt-0 lg:max-w-2xl lg:px-6 lg:pb-12 lg:pt-8">
             <Outlet />
           </main>
         </div>
 
-        <nav className="pointer-events-none fixed inset-x-0 bottom-0 z-40 pb-[calc(env(safe-area-inset-bottom)+10px)] lg:hidden">
-          <div className="mobile-bottom-nav-shell pointer-events-auto">
-            <div className="mobile-bottom-nav-main">
+        <nav className="pointer-events-none fixed inset-x-0 bottom-0 z-40 pb-[calc(env(safe-area-inset-bottom)+8px)] lg:hidden">
+          <div className="flex w-full items-end gap-2 px-2">
+            <div className="pointer-events-auto grid h-14 flex-1 grid-cols-3 items-center rounded-[28px] border border-white/[0.09] bg-[#18191b] px-1 shadow-[0_6px_20px_rgba(0,0,0,0.28)]">
               {NAV.map((item) => {
                 const active = item.to === "/" ? pathname === "/" : pathname.startsWith(item.to);
                 const Icon = item.icon;
@@ -93,20 +93,26 @@ export function AppShell() {
                     key={item.to}
                     to={item.to}
                     className={cn(
-                      "relative flex min-w-0 h-full flex-col items-center justify-center gap-1 text-[10px] font-medium",
-                      active ? "text-foreground" : "text-muted-foreground"
+                      "relative flex min-w-0 h-full flex-col items-center justify-center gap-0.5 text-[10px] font-medium",
+                      active ? "text-white" : "text-[#8f9095]"
                     )}
                   >
-                    <Icon className="size-[20px] stroke-[1.6]" />
+                    <Icon className="size-[19px] stroke-[1.6]" />
                     <span>{item.label}</span>
-                    {active && <span className="mobile-nav-indicator" />}
+                    {active && (
+                      <span className="absolute bottom-1 h-0.5 w-5 rounded-full bg-white/80" />
+                    )}
                   </Link>
                 );
               })}
             </div>
 
-            <Link to="/swap" aria-label="Swap" className="mobile-swap-button">
-              <ArrowLeftRight className="size-[21px] stroke-[1.6]" />
+            <Link
+              to="/swap"
+              aria-label="Swap"
+              className="pointer-events-auto grid size-14 shrink-0 place-items-center rounded-[19px] border border-white/[0.09] bg-[#18191b] shadow-[0_6px_20px_rgba(0,0,0,0.28)] active:scale-95"
+            >
+              <ArrowLeftRight className="size-[20px] text-white stroke-[1.6]" />
             </Link>
           </div>
         </nav>
